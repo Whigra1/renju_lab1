@@ -2,8 +2,11 @@ using Renju_lab1.Board;
 
 namespace Renju_lab1.Files;
 
-public class TestFilesService(int boardSize = 19)
+
+public class TestFilesService(int boardSize = BoardOptions.BoardSize)
 {
+    const int MaxTestCasesCount = 11;
+    const int MinTestCasesCount = 0;
     /// <summary>
     /// Reads test cases from a specified file path and returns a list of test cases. Test cases should not have spaces between.
     /// </summary>
@@ -18,8 +21,8 @@ public class TestFilesService(int boardSize = 19)
         if (!enumerator.MoveNext()) return []; // empty file
 
         if (!int.TryParse(enumerator.Current, out int testCountNumber)) return []; // invalid file
-
-        if (testCountNumber is <= 0 or > 11) return []; // invalid cases count
+        
+        if (testCountNumber is <= MinTestCasesCount or > MaxTestCasesCount) return []; // invalid cases count
         
         var testCases = new List<TestCase>();
         var testCase = new TestCase(boardSize);

@@ -10,7 +10,7 @@ public class Board
 {
     private Cell[,] Cells { get; init; }
     public int Size { get; init; }
-    public Board(int size)
+    public Board(int size = BoardOptions.BoardSize)
     {
         Cells = new Cell[size, size];
         for (var row = 0; row < size; row++)

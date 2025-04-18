@@ -16,13 +16,11 @@ public class Renju(Board.Board board)
             for (var x = 0; x < board.Size ; x++)
             {
                 var cell = board[y,x];
-                switch (cell)
+                if (cell is OccupiedCell c && IsGameOver(c))
                 {
-                    case OccupiedCell c when IsGameOver(c):
-                        return new Winner(c.Pawn);
-                    default:
-                        continue;
+                    return new Winner(c.Pawn);
                 }
+                
             }
         }
         return new Draw();

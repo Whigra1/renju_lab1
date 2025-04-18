@@ -2,8 +2,6 @@
 using Renju_lab1.Board;
 using Renju_lab1.Files;
 
-const int boardSize = 19;
-
 int Main()
 {
     var testFilesService = new TestFilesService();
@@ -11,7 +9,7 @@ int Main()
 
     for (var i = 0; i < testCases.Count; i++)
     {
-        var board = new Board(boardSize);
+        var board = new Board();
         switch (testFilesService.FillBoardFromTestCase(board, testCases[i]))
         {
             case OutOfBounds oErr:
