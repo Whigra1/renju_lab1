@@ -32,15 +32,17 @@ public class Renju(Board.Board board)
         var col = currentCell.Pawn.Position.Col;
         var row = board.Size - currentCell.Pawn.Position.Row - 1;
 
+        var winningLineLength = 5;
+        
         List<List<Cell>> sides = [
-            board.DrawLine(col, col, row, row - 5), // up
-            board.DrawLine(col, col, row, row + 5), // down
-            board.DrawLine(col, col - 5, row, row), // left
-            board.DrawLine(col, col + 5, row, row), // right
-            board.DrawLine(col, col - 5, row, row - 5), // diagonal up left
-            board.DrawLine(col, col + 5, row, row - 5), // diagonal up right
-            board.DrawLine(col, col - 5, row, row + 5), // diagonal down left
-            board.DrawLine(col, col + 5, row, row + 5), // diagonal down right
+            board.DrawLine(col, col, row, row - winningLineLength), // up
+            board.DrawLine(col, col, row, row + winningLineLength), // down
+            board.DrawLine(col, col - winningLineLength, row, row), // left
+            board.DrawLine(col, col + winningLineLength, row, row), // right
+            board.DrawLine(col, col - winningLineLength, row, row - winningLineLength), // diagonal up left
+            board.DrawLine(col, col + winningLineLength, row, row - winningLineLength), // diagonal up right
+            board.DrawLine(col, col - winningLineLength, row, row + winningLineLength), // diagonal down left
+            board.DrawLine(col, col + winningLineLength, row, row + winningLineLength), // diagonal down right
         ];
         
 
