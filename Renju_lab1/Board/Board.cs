@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Numerics;
 using Renju_lab1.Files;
 
 namespace Renju_lab1.Board;
@@ -54,11 +55,8 @@ public class Board
     /// <param name="y2">The ending y-coordinate of the line.</param>
     /// <param name="size">The maximum number of cells to include in the line. Defaults to 5.</param>
     /// <returns>A list of cells representing the drawn line. If the coordinates are out of bounds or invalid, returns an empty list.</returns>
-    public List<Cell> DrawLine(int x1, int x2, int y1, int y2, int size = 5)
+    public List<Cell> DrawLine(int x1, int x2, int y1, int y2)
     {
-        if (x1 > x2) (x1, x2) = (x2, x1);
-        if (y1 > y2) (y1, y2) = (y2, y1);
-        
         if (x2 >= Size - 1) x2 = Size - 1;
         if (y2 >= Size - 1) y2 = Size - 1;
         
@@ -71,24 +69,26 @@ public class Board
 
         if (x1 == x2 && y1 == y2) return [Cells[y1, x1]];
         
-        var result = new List<Cell>(size);
-        
-        var dx = Math.Abs(x2 - x1);
-        var dy = Math.Abs(y2 - y1);
-        var step = 1;
-        
-        for (var i = 0.5; i <= size; i += step)
+        var line = new List<Cell>();
+        var v1 = new Vector2(x1, y1);
+        var v2 = new Vector2(x2, y2);
+        var direction = v2 - v1;
+        var length = (int) direction.Length() + 1;
+        var boardSize = Size;
+        var added = new Dictionary<(int, int), bool>();
+        for (float i = 0; i < length ; i++)
         {
-            if (dx == 0)
-            {
-                result.Add(Cells[(int) (i + y1), x1]);
-                continue;
-            }
-            var y = (int) (i * dy / dx); // Triangle similarity formula :)
-            result.Add(Cells[y + y1, (int)(i + x1)]);
+            var invY = boardSize - y1 - 1;
+            var fractionOfDirection = i / length;
+            var y = (int)(invY - direction.Y * fractionOfDirection);
+            var x = (int)(direction.X * fractionOfDirection + x1);
+            if (added.ContainsKey((x, y))) continue;
+            line.Add(Cells[y, x]);
+            added[(x, y)] = true;
         }
-        return result;
+        return line;
     }
+    
 
     /// <summary>
     /// Provides indexed access to the cells on the game board based on row and column indices.
@@ -102,7 +102,6 @@ public class Board
     {
         get
         {
-            // Add bounds checking if necessary
             if (row < 0 || row >= Size || col < 0 || col >= Size)
             {
                 return new Cell();

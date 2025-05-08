@@ -30,8 +30,8 @@ public class Renju(Board.Board board)
     {
 
         var col = currentCell.Pawn.Position.Col;
-        var row = currentCell.Pawn.Position.Row;
-        
+        var row = board.Size - currentCell.Pawn.Position.Row - 1;
+
         List<List<Cell>> sides = [
             board.DrawLine(col, col, row, row - 5), // up
             board.DrawLine(col, col, row, row + 5), // down
